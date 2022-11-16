@@ -63,45 +63,45 @@ abstract class AbstractReuseMetaDataTable implements ReuseMetaDataTableInterface
             return false;
         }
 
-        if ($reuseInfo->project_name !== $projectName) {
+        if ($reuseInfo['project_name'] !== $projectName) {
             $this->cantReuseReason = "the database is owned by another project "
                 . "{$this->renderComparison($reuseInfo->project_name, $projectName)}";
             throw AdaptBuildException::databaseOwnedByAnotherProject($database, $reuseInfo->project_name);
         }
 
-        if ($reuseInfo->reuse_table_version != Settings::REUSE_TABLE_VERSION) {
+        if ($reuseInfo['reuse_table_version'] != Settings::REUSE_TABLE_VERSION) {
             $this->cantReuseReason = "the reuse version doesn't match";
             return false;
         }
 
-        if ($reuseInfo->build_checksum !== $buildChecksum) {
+        if ($reuseInfo['build_checksum'] !== $buildChecksum) {
             $this->cantReuseReason = "the build-checksum doesn't match "
                 . "{$this->renderComparison($reuseInfo->build_checksum, $buildChecksum)}";
             return false;
         }
 
-        if ($reuseInfo->scenario_checksum !== $scenarioChecksum) {
+        if ($reuseInfo['scenario_checksum'] !== $scenarioChecksum) {
             $this->cantReuseReason = "the scenario-checksum doesn't match "
                 . "{$this->renderComparison($reuseInfo->scenario_checksum, $scenarioChecksum)}";
             return false;
         }
 
-        if (($reuseInfo->transaction_reusable === 0) || ($reuseInfo->transaction_reusable === false)) {
+        if (($reuseInfo['transaction_reusable'] === 0) || ($reuseInfo['transaction_reusable'] === false)) {
             $this->cantReuseReason = "the wrapper-transaction was committed or rolled-back";
             return false;
         }
 
-        if (($reuseInfo->journal_reusable === 0) || ($reuseInfo->journal_reusable === false)) {
+        if (($reuseInfo['journal_reusable'] === 0) || ($reuseInfo['journal_reusable'] === false)) {
             $this->cantReuseReason = "the rewind journaling failed";
             return false;
         }
 
-        if (($reuseInfo->validation_passed === 0) || ($reuseInfo->validation_passed === false)) {
+        if (($reuseInfo['validation_passed'] === 0) || ($reuseInfo['validation_passed'] === false)) {
             $this->cantReuseReason = "the post-test database validation failed";
             return false;
         }
 
-        if (!$reuseInfo->transaction_reusable && !$reuseInfo->journal_reusable) {
+        if (!$reuseInfo['transaction_reusable'] && !$reuseInfo['journal_reusable']) {
             $this->cantReuseReason = "no re-use mechanism was used";
             return false;
         }
