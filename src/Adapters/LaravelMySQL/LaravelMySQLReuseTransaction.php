@@ -59,7 +59,7 @@ class LaravelMySQLReuseTransaction extends AbstractReuseTransaction implements R
                 "SELECT `transaction_reusable` FROM `" . Settings::REUSE_TABLE . "` LIMIT 0, 1"
             );
 
-            return (($_ = $rows[0]) ? $_->transaction_reusable : null) ?? null;
+            return (($_ = $rows[0]) ? $_['transaction_reusable'] : null) ?? null;
 
         } catch (Throwable $exception) {
             return null;
